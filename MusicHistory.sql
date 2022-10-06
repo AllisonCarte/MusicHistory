@@ -9,21 +9,22 @@
 
 -- 4. Write a SELECT query that lists all the Artists that have a Pop Album
 --pop = 7
---SELECT artist.ArtistName, genre.Label FROM Artist JOIN Album ON Artist.id = album.ArtistId JOIN Genre ON album.GenreId = Genre.Id WHERE Genre.Id = 7 ORDER BY Label DESC;
+--SELECT artist.ArtistName, genre.[Label] FROM Artist JOIN Album ON Artist.id = album.ArtistId JOIN Genre ON album.GenreId = Genre.Id WHERE Genre.Id = 7 ORDER BY [Label] DESC;
 
 --5 Write a SELECT query that lists all the Artists that have a Jazz or Rock Album
 --jazz = 4
 --rock = 2
---SELECT artist.ArtistName, genre.Label FROM Artist JOIN Album ON Artist.id = album.ArtistId JOIN Genre ON album.GenreId = Genre.Id WHERE Genre.Id = 4 OR Genre.id = 2 ORDER BY Label DESC;
+--SELECT artist.ArtistName, genre.[Label] FROM Artist JOIN Album ON Artist.id = album.ArtistId JOIN Genre ON album.GenreId = Genre.Id WHERE Genre.Id = 4 OR Genre.id = 2 ORDER BY [Label] DESC;
 
 --6 Write a SELECT statement that lists the Albums with no songs
---SELECT Title FROM Album WHERE AlbumLength = 0;
+--SELECT Title FROM Album WHERE AlbumLength = 0; <-- how I initially thought it was done
+--SELECT a.Title as AlbumTitle, s.Title as SongTitle FROM Album a LEFT JOIN Song s on a.id = s.AlbumId where s.Id IS Null; <-- how it's actually done
 
 --7 Using the INSERT statement, add one of your favorite artists to the Artist table.
 --INSERT INTO Artist (ArtistName, YearEstablished) VALUES ('Will Wood', '2015');
 
 --8 Using the INSERT statement, add one, or more, albums by your artist to the Album table.
---INSERT INTO Album (Title, ReleaseDate, AlbumLength, Label, ArtistId, GenreId) VALUES ('Everything Is a Lot', '5/20/2015', '2951', 'Say-10', '31', '16');
+--INSERT INTO Album (Title, ReleaseDate, AlbumLength, [Label], ArtistId, GenreId) VALUES ('Everything Is a Lot', '5/20/2015', '2951', 'Say-10', '31', '16');
 
 --9 Using the INSERT statement, add some songs that are on that album to the Song table.
 --INSERT INTO Song (Title, SongLength, ReleaseDate, GenreId, ArtistId, AlbumId) VALUES ('6up 5oh Cop-Out (Pro / Con)', '222', '5/20/2015', '16', '31', '23');
@@ -44,16 +45,16 @@
 --SELECT s.Title, a.Title, n.ArtistName FROM Song s LEFT JOIN Album a ON s.AlbumId = a.Id LEFT JOIN Artist N ON s.ArtistId = n.Id WHERE a.Title = 'Everything is A Lot';
 
 --11 Write a SELECT statement to display how many songs exist for each album. You'll need to use the COUNT() function and the GROUP BY keyword sequence.
---SELECT a.Title, COUNT(*) FROM Song s RIGHT JOIN Album a ON s.AlbumId = a.Id GROUP BY a.Title ORDER BY 2 Desc;
+--SELECT a.Title, COUNT(s.Title) AS SongCount FROM Song s RIGHT JOIN Album a ON s.AlbumId = a.Id GROUP BY a.Title ORDER BY 2 Desc;
 
 --12 Write a SELECT statement to display how many songs exist for each artist. You'll need to use the COUNT() function and the GROUP BY keyword sequence.
---SELECT a.ArtistName, COUNT(*) FROM Song s RIGHT JOIN Artist a ON s.ArtistId = a.Id GROUP BY a.ArtistName ORDER BY 2 Desc;
+--SELECT a.ArtistName, COUNT(s.Title) AS SongCount FROM Song s RIGHT JOIN Artist a ON s.ArtistId = a.Id GROUP BY a.ArtistName ORDER BY 2 Desc;
 
 --13 Write a SELECT statement to display how many songs exist for each genre. You'll need to use the COUNT() function and the GROUP BY keyword sequence.
---SELECT g.Label, COUNT(*) FROM Song s RIGHT JOIN Genre g ON s.GenreId = g.Id GROUP BY g.Label ORDER BY 2 Desc;
+--SELECT g.[Label], COUNT(s.Title) AS SongCount FROM Song s RIGHT JOIN Genre g ON s.GenreId = g.Id GROUP BY g.[Label] ORDER BY 2 Desc;
 
 --14 Write a SELECT query that lists the Artists that have put out records on more than one record label. Hint: When using GROUP BY instead of using a WHERE clause, use the HAVING keyword
---SELECT a.ArtistName, COUNT(b.Label) FROM Artist a RIGHT JOIN Album b on b.ArtistId = a.Id GROUP BY a.ArtistName HAVING (COUNT(b.Label)) > 1;
+--SELECT a.ArtistName, COUNT(distinct b.[Label]) as LabelCount FROM Artist a RIGHT JOIN Album b on b.ArtistId = a.Id GROUP BY a.ArtistName HAVING (COUNT(distinct b.[label])) > 1;
 
 --15 Using MAX() function, write a select statement to find the album with the longest duration. The result should display the album title and the duration.
 --SELECT Title as AlbumTitle, AlbumLength FROM Album WHERE AlbumLength IN (select MAX(AlbumLength) from Album);
